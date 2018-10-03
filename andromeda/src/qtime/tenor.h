@@ -50,10 +50,13 @@ namespace qtime
 		Tenor<Q> operator/=(const double & l, const Tenor<Q>& rhs) { return Tenor<Q>(l/rhs.n); }
 
 
-		inline double to_years(const Tenor<SDAY>& o, int daysperyear = 360) { return o.n / daysperyear; }
-		inline double to_years(const Tenor<SMONTH>& o, int daysperyear = 360) { return o.n / 12.0; }
-		inline double to_years(const Tenor<SYEAR>& o, int daysperyear = 360) { return o.n; }
-		inline double to_years(const Tenor<SWEEK>& o, int daysperyear = 360) { return o.n*7/daysperyear; }
+		inline double to_years(const Tenor<SDAY>& o, int daysperyear = 365)
+		{
+			return o.n / daysperyear;
+		}
+		inline double to_years(const Tenor<SMONTH>& o, int daysperyear = 365) { return o.n / 12.0; }
+		inline double to_years(const Tenor<SYEAR>& o, int daysperyear = 365) { return o.n; }
+		inline double to_years(const Tenor<SWEEK>& o, int daysperyear = 365) { return o.n*7/daysperyear; }
 		
 
 		inline Tenor<SDAY> operator""_days(long double n) { return Tenor<SDAY>(n); }

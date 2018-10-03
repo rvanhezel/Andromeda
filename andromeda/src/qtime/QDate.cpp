@@ -112,12 +112,12 @@ int qtime::QDate::operator-(const QDate& that) const
 
 bool qtime::QDate::operator>(const QDate& that) const
 {
-	return (*_d) < *(that._d);
+	return (*_d) > *(that._d);
 }
 
 bool qtime::QDate::operator<(const QDate& that) const
 {
-	return !(this->operator<(that));
+	return !(this->operator>(that));
 }
 
 bool qtime::QDate::operator<=(const QDate& that) const

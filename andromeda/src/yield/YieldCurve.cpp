@@ -11,7 +11,7 @@ namespace
 yield::YieldCurve::YieldCurve(std::unique_ptr<qtime::DayCounter>& dc, const qtime::QDate& t0, std::vector<const instrument::Instrument*> pintr):
 	 t0_(t0)
 {
-	pinstruments = std::move(pintr);
+	pinstruments = std::move(pintr);	
 	dc_ = std::move(dc);
 }
 
@@ -108,29 +108,29 @@ double yield::YieldCurve::forward(const qtime::QDate& t1, const qtime::QDate& t2
 	throw "Not Implemented";
 }
 
-
 yield::YieldCurveBuilder::YieldCurveBuilder(const qtime::QDate& t0):t0_(t0)
 {}
 
-yield::YieldCurveBuilder& yield::YieldCurveBuilder::withInstrument(const instrument::Instrument* pintr)
+
+const yield::YieldCurveBuilder& yield::YieldCurveBuilder::withInstrument(const instrument::Instrument* pintr) const
 {
 	instruments.push_back(pintr);
 	return *this;
 }
 
-yield::YieldCurveBuilder& yield::YieldCurveBuilder::withDayCount(std::unique_ptr<qtime::DayCounter> pdc)
+const yield::YieldCurveBuilder& yield::YieldCurveBuilder::withDayCount(std::unique_ptr<qtime::DayCounter> pdc) const
 {
 	dc = std::move(pdc);
 	return *this;
 }
 
-const yield::YieldCurve& yield::YieldCurveBuilder::Build()
+yield::YieldCurve* yield::YieldCurveBuilder::Build() const
 {
 	if(!dc)
 	{
 		dc.reset(new qtime::SimpleDayCounter());
 	}
-	return YieldCurve(dc, t0_,instruments);
+	return new YieldCurve(dc, t0_,instruments);
 }
 
 void yield::YieldCurve::boostrap()
@@ -138,7 +138,7 @@ void yield::YieldCurve::boostrap()
 	using namespace instrument;
 	std::vector<const instrument::Instrument*> swaps,xibors;
 	std::copy_if(pinstruments.begin(), pinstruments.end(), std::back_inserter(swaps), [](auto p) {return dynamic_cast<const instrument::Swap*>(p) != nullptr; });
-	std::copy_if(pinstruments.begin(), pinstruments.end(), std::back_inserter(swaps), [](auto p) {return dynamic_cast<const instrument::xIbor*>(p) != nullptr; });
+	std::copy_if(pinstruments.begin(), pinstruments.end(), std::back_inserter(xibors), [](auto p) {return dynamic_cast<const instrument::xIbor*>(p) != nullptr; });
 
 	std::sort(xibors.begin(),xibors.end(),[](auto a, auto b){
 		const xIbor* x = dynamic_cast<const instrument::xIbor*>(a);
@@ -170,7 +170,7 @@ void yield::YieldCurve::boostrap()
 	for(auto swap: swaps)
 	{
 		const Swap* pswap = static_cast<const instrument::Swap*>(swap);		
-		auto tmat = to_years(qtime::Tenor<qtime::SDAY>(pswap->maturity - t0_));
+		auto tmat = int(to_years(qtime::Tenor<qtime::SDAY>(pswap->maturity - t0_)));
 		double S = pswap->C;
 		double l = 0, r = 1;
 		double m = (l + r) / 2.0;
@@ -192,7 +192,7 @@ void yield::YieldCurve::boostrap()
 		}
 		
 		t_.push_back(tmat);
-		rates_.push_back(m);
+		rates_.push_back(-log(m)/double(tmat));
 		
 	}
 }
@@ -217,10 +217,29 @@ double yield::YieldCurve::interpolated_rate(const double& t, boost::optional<std
 	else
 	{
 		std::vector<double>::iterator low, up;
-		low = std::lower_bound(t_.begin(), t_.end(), t);
-		up = std::lower_bound(t_.begin(), t_.end(), t);
+		low = std::lower_bound(t_.begin(), t_.end(), t);		
+		up = std::upper_bound(t_.begin(), t_.end(), t);
+		
+		if(low != t_.begin() && *low > t)
+		{
+			auto a = --low;
+			low = a;
+		}
+
 		int i = std::distance(t_.begin(), low);
 		int j = std::distance(t_.begin(), up);
+		
+		i = i < 0 ? 0 : i;
+
+		if(up == t_.end())
+		{
+			j = i;
+		}
+		else if(low == t_.end())
+		{
+			i = j;
+		}
+
 		t0 = t_[i];
 		t1 = t_[j];
 		r0 = rates_[i];
@@ -240,20 +259,21 @@ double yield::YieldCurve::interpolated_rate(const double& t, boost::optional<std
 double yield::YieldCurve::priceSwap(const instrument::Swap* swap,const double &p)
 {
 	//computing time in years:
-	auto tmat = dc_->yearfraction(t0_, swap->maturity);
+	auto tmat = int(dc_->yearfraction(t0_, swap->maturity)+0.5);
 	auto dt = qtime::to_years(swap->floating_leg.tenor);
 
 	
-
+	double r = -log(p) / tmat;
 	double num = 1-p;
 	double den = 0;
-	double tx = 0;
+	double tx = dt;
 	
 	while(tx <= tmat)
 	{
-		boost::optional<std::pair<double, double>> xp = std::make_pair(tx, p);
+		boost::optional<std::pair<double, double>> xp = std::make_pair(tmat, r);
 		auto rx = interpolated_rate(tx, xp);
-		den += std::exp(-rx * dt);		
+		den += std::exp(-rx * tx)*dt;
+		tx += dt;
 	}
 
 	return num / den;

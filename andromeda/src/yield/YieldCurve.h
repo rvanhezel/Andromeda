@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "libdef.h"
 #include "../instrument/Instrument.h"
 #include "../qtime/QDate.h"
 #include <vector>
@@ -8,7 +9,7 @@ namespace yield
 {
 	class YieldCurveBuilder;
 
-	class YieldCurve
+	class EXPORT_SYMBOL  YieldCurve
 	{
 		std::unique_ptr<qtime::DayCounter>  dc_;
 		std::vector<const instrument::Instrument*> pinstruments;
@@ -46,18 +47,18 @@ namespace yield
 	};
 
 
-	class YieldCurveBuilder
+	class EXPORT_SYMBOL YieldCurveBuilder
 	{
-		std::vector<const instrument::Instrument*> instruments;
-		std::unique_ptr<qtime::DayCounter> dc;
+		mutable std::vector<const instrument::Instrument*> instruments;
+		mutable std::unique_ptr<qtime::DayCounter> dc;
 		const qtime::QDate& t0_;
-
-		double interpolatedRate(const double &t1, const double &t2);
+		
 	public:
-		YieldCurveBuilder(const qtime::QDate& t0);
-		YieldCurveBuilder& withInstrument(const instrument::Instrument* pintr);
-		YieldCurveBuilder& withDayCount(std::unique_ptr<qtime::DayCounter> pdc);	
-		const YieldCurve & Build();
+		explicit YieldCurveBuilder(const qtime::QDate& t0);
+		
+		const YieldCurveBuilder& withInstrument(const instrument::Instrument* pintr) const;
+		const YieldCurveBuilder& withDayCount(std::unique_ptr<qtime::DayCounter> pdc) const;	
+		YieldCurve*  Build() const;
 	};
 
 }

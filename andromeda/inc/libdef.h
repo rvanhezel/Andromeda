@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef EXPMODULE
-#define EXPORT_SYMBOL __declspec(dllexport)
+#define EXPORT_SYMBOL 
 #else
-#define EXPORT_SYMBOL __declspec(dllimport)
+#define EXPORT_SYMBOL 
 #endif

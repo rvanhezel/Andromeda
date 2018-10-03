@@ -1,7 +1,8 @@
 
 add_definitions(-DEXPMODULE)
 
-file(GLOB SOURCES  ${CMAKE_SOURCE_DIR}/andromeda/src/*.cpp 
+file(GLOB SOURCES  ${CMAKE_SOURCE_DIR}/andromeda/tests/*.cpp 
+					${CMAKE_SOURCE_DIR}/andromeda/*.cpp 
 				   ${CMAKE_SOURCE_DIR}/andromeda/src/qtime/*.cpp
 				   ${CMAKE_SOURCE_DIR}/andromeda/src/yield/*.cpp
 				   ${CMAKE_SOURCE_DIR}/andromeda/src/instrument/*.cpp)
@@ -45,7 +46,7 @@ message(STATUS ${Boost_LIBRARY_DIRS})
 include_directories( ${Boost_INCLUDE_DIRS} )
 link_directories(${Boost_LIBRARY_DIRS})
 
-add_library(
+add_executable(
     andromeda
         ${SOURCES} 
         ${HEADERS}
