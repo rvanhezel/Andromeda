@@ -2,7 +2,7 @@
 #include <iostream>
 #include <memory>
 #include "../src/qtime/tenor.h"
-#include "../src/yield/YieldCurve.h"
+//#include "../src/yield/YieldCurve.h"
 #include <boost/range/counting_range.hpp>
 #include <boost/range/irange.hpp>
 
@@ -12,7 +12,7 @@ using namespace literals;
 int main(int argc, char* args[])
 {
 	std::cout << "Hello Andromeda" << std::endl;
-	yield::YieldCurveBuilder ybuilder(qtime::QDate(01,01,2018));
+	/*yield::YieldCurveBuilder ybuilder(qtime::QDate(01,01,2018));
 	std::unique_ptr<qtime::DayCounter> dc(new qtime::Thirty360(qtime::Thirty360::CONVENTION::BONDBASIS,true));
 	
 	instrument::CashFlow flow1(QDate(1, 01, 2018), 3.0_months,1e6);
@@ -40,6 +40,6 @@ int main(int argc, char* args[])
 	{
 		double t = 10.0 * n / double(N);
 		std::cout << "t="<<t<<" r=" << oyield->rate(Tenor<SYEAR>(t)) << std::endl;
-	}
+	}*/
 	return 0;
 }

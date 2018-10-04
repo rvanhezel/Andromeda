@@ -1,5 +1,6 @@
 #pragma once
 #include "libdef.h"
+#include <cmath>
 
 namespace qtime
 {

@@ -1,0 +1,37 @@
+[
+{
+  "directory": "/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/build/andromeda",
+  "command": "/usr/bin/clang++  -DEXPMODULE -I/usr/local/include -I/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/inc  -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -mmacosx-version-min=10.13   -std=gnu++1z -o CMakeFiles/andromeda.dir/src/instrument/Instrument.cpp.o -c /Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/src/instrument/Instrument.cpp",
+  "file": "/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/src/instrument/Instrument.cpp"
+},
+{
+  "directory": "/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/build/andromeda",
+  "command": "/usr/bin/clang++  -DEXPMODULE -I/usr/local/include -I/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/inc  -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -mmacosx-version-min=10.13   -std=gnu++1z -o CMakeFiles/andromeda.dir/src/qtime/Calendar.cpp.o -c /Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/src/qtime/Calendar.cpp",
+  "file": "/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/src/qtime/Calendar.cpp"
+},
+{
+  "directory": "/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/build/andromeda",
+  "command": "/usr/bin/clang++  -DEXPMODULE -I/usr/local/include -I/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/inc  -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -mmacosx-version-min=10.13   -std=gnu++1z -o CMakeFiles/andromeda.dir/src/qtime/DayCounter.cpp.o -c /Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/src/qtime/DayCounter.cpp",
+  "file": "/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/src/qtime/DayCounter.cpp"
+},
+{
+  "directory": "/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/build/andromeda",
+  "command": "/usr/bin/clang++  -DEXPMODULE -I/usr/local/include -I/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/inc  -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -mmacosx-version-min=10.13   -std=gnu++1z -o CMakeFiles/andromeda.dir/src/qtime/GermanCalendar.cpp.o -c /Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/src/qtime/GermanCalendar.cpp",
+  "file": "/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/src/qtime/GermanCalendar.cpp"
+},
+{
+  "directory": "/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/build/andromeda",
+  "command": "/usr/bin/clang++  -DEXPMODULE -I/usr/local/include -I/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/inc  -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -mmacosx-version-min=10.13   -std=gnu++1z -o CMakeFiles/andromeda.dir/src/qtime/QDate.cpp.o -c /Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/src/qtime/QDate.cpp",
+  "file": "/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/src/qtime/QDate.cpp"
+},
+{
+  "directory": "/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/build/andromeda",
+  "command": "/usr/bin/clang++  -DEXPMODULE -I/usr/local/include -I/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/inc  -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -mmacosx-version-min=10.13   -std=gnu++1z -o CMakeFiles/andromeda.dir/src/qtime/tenor.cpp.o -c /Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/src/qtime/tenor.cpp",
+  "file": "/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/src/qtime/tenor.cpp"
+},
+{
+  "directory": "/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/build/andromeda",
+  "command": "/usr/bin/clang++  -DEXPMODULE -I/usr/local/include -I/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/inc  -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -mmacosx-version-min=10.13   -std=gnu++1z -o CMakeFiles/andromeda.dir/tests/main.cpp.o -c /Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/tests/main.cpp",
+  "file": "/Users/rvanhezel/Documents/C++/GitHubProjs/Andromeda/andromeda/tests/main.cpp"
+}
+]
