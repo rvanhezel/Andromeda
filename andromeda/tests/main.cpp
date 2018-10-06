@@ -12,17 +12,20 @@ using namespace literals;
 int main(int argc, char* args[])
 {
 	std::cout << "Hello Andromeda" << std::endl;
-	yield::YieldCurveBuilder ybuilder(qtime::QDate(01,01,2018));
-	std::unique_ptr<qtime::DayCounter> dc(new qtime::Thirty360(qtime::Thirty360::CONVENTION::BONDBASIS,true));
-	
-	instrument::CashFlow flow1(QDate(1, 01, 2018), 3.0_months,1e6);
-	instrument::CashFlow flow2(QDate(1, 01, 2018), 6.0_months, 1e6);
 
-	auto libor1m = new instrument::xIbor(qtime::QDate(01, 01, 2018),0.01, 1.0_months);
-	auto libor3m = new instrument::xIbor(qtime::QDate(01, 01, 2018), 0.015, 3.0_months);
-	auto libor6m = new instrument::xIbor(qtime::QDate(01, 01, 2018), 0.019, 6.0_months);
-	auto libor9m = new instrument::xIbor(qtime::QDate(01, 01, 2018), 0.0197, 9.0_months);
-	auto libor12m = new instrument::xIbor(qtime::QDate(01, 01, 2018), 0.02, 12.0_months);
+	Tenor<SMONTH> tmonth = 1.0_years;
+	Tenor<SWEEK> tweek = 1.0_months;
+	yield::YieldCurveBuilder ybuilder(qtime::QDate(01,01,2018));
+	std::unique_ptr<qtime::DayCounter> dc(new qtime::Actual365fixed());
+	qtime::QDate T0(01, 01, 2018);
+	instrument::CashFlow flow1(T0, 3.0_months,1e6);
+	instrument::CashFlow flow2(T0, 6.0_months, 1e6);
+	
+	auto libor1m = new instrument::xIbor(T0,0.01, 1.0_months);
+	auto libor3m = new instrument::xIbor(T0, 0.015, 3.0_months);
+	auto libor6m = new instrument::xIbor(T0, 0.019, 6.0_months);
+	auto libor9m = new instrument::xIbor(T0, 0.0197, 9.0_months);
+	auto libor12m = new instrument::xIbor(T0, 0.02, 12.0_months);
 	auto swap1 = new instrument::Swap(qtime::QDate(01, 01, 2020),0.04,flow1,flow2);
 	auto swap3 = new instrument::Swap(qtime::QDate(01, 01, 2021), 0.05, flow1, flow2);
 	auto swap5 = new instrument::Swap(qtime::QDate(01, 01, 2023), 0.06, flow1, flow2);
@@ -41,5 +44,12 @@ int main(int argc, char* args[])
 		double t = 10.0 * n / double(N);
 		std::cout << "t="<<t<<" r=" << oyield->rate(Tenor<SYEAR>(t)) << std::endl;
 	}
+
+	auto f11y = oyield->forward(T0 + 365, qtime::Tenor<SDAY>(365));
+	auto f16m = oyield->forward(T0 + 365, qtime::Tenor<SDAY>(30 * 6));
+	auto f13m = oyield->forward(T0 + 365, qtime::Tenor<SDAY>(30 * 3));
+	auto f11d = oyield->forward(T0 + 365, qtime::Tenor<SDAY>(1));
+	auto d1 = oyield->discount(1.0_years);
+	auto zz = 1 / (1 + f11d * to_years(Tenor<SDAY>(1)));
 	return 0;
 }

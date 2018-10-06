@@ -11,6 +11,6 @@
 		
 		public:
 			GermanCalendar();
-			bool isBankHoliday(const QDate&) override;			
+			bool isBankHoliday(const QDate&) const override;			
 		};
 	}

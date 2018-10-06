@@ -13,6 +13,7 @@ instrument::CashFlow::CashFlow(const qtime::QDate& dm,const qtime::Tenor<qtime::
 {
 }
 
+
 instrument::CashFlow::~CashFlow()
 {
 }
@@ -24,8 +25,8 @@ instrument::Instrument::INSTRUMENTCLASS instrument::CashFlow::getclass()
 
 instrument::Swap::Swap(const qtime::QDate& dm, const double& c, const CashFlow& floating_leg, const CashFlow& fixed_leg)
 	:instrument::Instrument(dm), C(c),
-	floating_leg(floating_leg),
-	fixed_leg(fixed_leg)
+	floating_leg(&floating_leg),
+	fixed_leg(&fixed_leg)
 {
 }
 

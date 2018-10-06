@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "libdef.h"
 #include "../qtime/QDate.h"
+#include "../qtime/DayCounter.h"
 #include <boost/optional.hpp>
 #include "../qtime/tenor.h"
 
@@ -14,6 +15,7 @@ namespace instrument
 		boost::optional<qtime::QDate> startdate;
 		const qtime::QDate maturity;
 		boost::optional<std::string>  currency;
+		std::unique_ptr<qtime::DayCounter> dc_;
 		virtual ~Instrument();
 		virtual INSTRUMENTCLASS getclass() = 0;
 	};
@@ -21,8 +23,7 @@ namespace instrument
 	class EXPORT_SYMBOL CashFlow: public Instrument
 	{
 	public:
-		CashFlow(const qtime::QDate& maturity,const qtime::Tenor<qtime::SMONTH>& tenor, double nominal);
-
+		CashFlow(const qtime::QDate& maturity,const qtime::Tenor<qtime::SMONTH>& tenor, double nominal);		
 		const qtime::Tenor<qtime::SMONTH> tenor;
 		const double nominal;
 		~CashFlow() override;
@@ -36,8 +37,8 @@ namespace instrument
 		Swap(const qtime::QDate& maturity,const double& c, const CashFlow& floating_leg, const CashFlow& fixed_leg);
 
 		const double C;
-		CashFlow floating_leg;
-		CashFlow fixed_leg;
+		const CashFlow* floating_leg;
+		const CashFlow* fixed_leg;
 		~Swap() override;
 		INSTRUMENTCLASS getclass() override;
 	};

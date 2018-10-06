@@ -12,7 +12,7 @@ protected:
 	boost::gregorian::date *_d;
 public:
 	//ctors
-	QDate() = delete;
+	QDate();
 	QDate(int day, int month, int year);	
 	explicit QDate(const long& unixtime);
 
@@ -32,8 +32,11 @@ public:
 	~QDate();
 
 		
-	QDate operator+(int days);
+	QDate MonthEnd() const;
+	QDate operator+(int days) const;
 	QDate operator-(int days) const;
+	QDate operator-=(int days) const;
+	QDate operator+=(int days) const;
 	int operator-(const QDate& that) const;
 	bool operator>(const QDate& that) const;
 	bool operator<(const QDate& that) const;

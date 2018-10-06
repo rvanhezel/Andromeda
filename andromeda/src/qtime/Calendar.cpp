@@ -8,18 +8,18 @@ namespace qtime {
 
 	bool Calendar::isWeekend(const QDate&d)
 	{
-		return isWeekend(d);
+		return d.IsWeekend();
 	}
 
-	bool Calendar::isHoliday(const QDate& d) {
+	bool Calendar::isHoliday(const QDate& d) const {
 		return isBankHoliday(d) || isWeekend(d);
 	}
 
-	bool Calendar::isBusinessDay(const QDate& d) {
+	bool Calendar::isBusinessDay(const QDate& d)  const {
 		return !isHoliday(d);
 	}
 
-	QDate Calendar::nextBusinessDay(const QDate& d) {
+	QDate Calendar::nextBusinessDay(const QDate& d)  const {
 		auto x = d;
 		int counter = 0;
 		while (!isBusinessDay(d) && counter < 100) {
@@ -32,7 +32,7 @@ namespace qtime {
 		return x;
 	}
 
-	QDate Calendar::prevBusinessDay(const QDate& d) {
+	QDate Calendar::prevBusinessDay(const QDate& d) const {
 		auto x = d;
 		int counter = 0;
 		while (!isBusinessDay(d) && counter < 100) {

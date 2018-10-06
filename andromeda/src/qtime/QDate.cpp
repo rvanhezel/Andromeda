@@ -8,6 +8,11 @@
 namespace pt = boost::posix_time;
 namespace g = boost::gregorian;
 
+qtime::QDate::QDate()
+{
+	_d = new boost::gregorian::date(1900, 01, 01);
+}
+
 qtime::QDate::QDate(int day, int month, int year) {
 	_d = new boost::gregorian::date(year, month, day);
 	auto a = _d->day();
@@ -36,6 +41,12 @@ qtime::QDate::~QDate() {
 	delete _d;
 }
 
+qtime::QDate qtime::QDate::MonthEnd() const
+{
+	auto d = _d->end_of_month();
+	return QDate(d.day(),d.month(),d.year());
+}
+
 qtime::QDate& qtime::QDate::operator=(const qtime::QDate& other) {
 	if (this != &other) {
 		delete _d;
@@ -53,7 +64,7 @@ qtime::QDate& qtime::QDate::operator=(qtime::QDate&& other) noexcept
 	return *this;
 }
 
-qtime::QDate qtime::QDate::operator+(int ndays) {
+qtime::QDate qtime::QDate::operator+(int ndays) const {
 	auto date = *_d + boost::gregorian::days(ndays);
 	QDate d(date.day(), date.month(), date.year());
 	return d;
@@ -88,7 +99,7 @@ bool qtime::QDate::IsMonthEnd() const
 }
 
 qtime::MONTH qtime::QDate::Month() const
-{
+{	
 	auto m = _d->month().as_enum();	
 	return MONTH(m);	
 }
@@ -103,6 +114,16 @@ qtime::QDate qtime::QDate::operator-(int ndays) const
 	auto date = *_d - boost::gregorian::days(ndays);
 	QDate d(date.day(), date.month(), date.year());
 	return d;
+}
+
+qtime::QDate qtime::QDate::operator-=(int days) const
+{
+	return *this - days;
+}
+
+qtime::QDate qtime::QDate::operator+=(int days) const
+{
+	return *this + days;
 }
 
 int qtime::QDate::operator-(const QDate& that) const

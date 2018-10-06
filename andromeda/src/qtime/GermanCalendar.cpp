@@ -5,7 +5,7 @@ qtime::GermanCalendar::GermanCalendar()
 {
 }
 
-bool qtime::GermanCalendar::isBankHoliday(const qtime::QDate& date) {
+bool qtime::GermanCalendar::isBankHoliday(const qtime::QDate& date) const{
 	
 
 	int d = date.DayOfTheMonth();

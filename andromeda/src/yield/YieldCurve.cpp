@@ -1,6 +1,7 @@
 ﻿#include "YieldCurve.h"
 #include <algorithm>
 #include <boost/range/combine.hpp>
+#include "../qtime/QDate.h"
 
 namespace
 {
@@ -83,9 +84,17 @@ double yield::YieldCurve::rate(const qtime::QDate& t)
 	return compute_rate(qtime::to_years(dt));
 }
 
-double yield::YieldCurve::forward(const qtime::QDate& t1, qtime::Tenor<qtime::SDAY> ndays)
+double yield::YieldCurve::forward(const qtime::QDate& td1, qtime::Tenor<qtime::SDAY> ndays)
 {
-	throw "Not Implemented";
+	auto t1 = qtime::to_years(qtime::Tenor<qtime::SDAY>(td1- t0_));
+		
+	auto dt2 = qtime::to_years(ndays);
+	auto t2 = t1 + dt2;
+	
+	return log(exp(compute_rate(t2)*t2 - compute_rate(t1)*t1)) / (t2 - t1);
+	/*1 / (1 + f * dt)*exp(-r1 * t1) = exp(-r2 * t2)
+		1 +exp( f * dt) = exp(r2*t2 - r1 * t1)
+		f *dt = ln(exp(r2*t2 - r1 * t1) - 1);*/
 }
 
 double yield::YieldCurve::forward(const qtime::QDate& t1, qtime::Tenor<qtime::SYEAR> nyears)
@@ -260,7 +269,7 @@ double yield::YieldCurve::priceSwap(const instrument::Swap* swap,const double &p
 {
 	//computing time in years:
 	auto tmat = int(dc_->yearfraction(t0_, swap->maturity)+0.5);
-	auto dt = qtime::to_years(swap->floating_leg.tenor);
+	auto dt = qtime::to_years(swap->floating_leg->tenor);
 
 	
 	double r = -log(p) / tmat;

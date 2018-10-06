@@ -189,7 +189,7 @@ namespace qtime
 
 	SimpleDayCounter::SimpleDayCounter()
 	{
-		fallback.reset(new Thirty360(Thirty360::CONVENTION::EUROBONDBASIS, false));
+		fallback.reset(new Actual365fixed());
 	}
 
 	std::string SimpleDayCounter::name()
