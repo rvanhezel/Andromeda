@@ -131,13 +131,13 @@ const yield::YieldCurveBuilder& yield::YieldCurveBuilder::withDayCount(std::uniq
 	return *this;
 }
 
-yield::YieldCurve* yield::YieldCurveBuilder::Build() const
+std::unique_ptr<yield::YieldCurve> yield::YieldCurveBuilder::Build() const
 {
 	if(!dc)
 	{
 		dc.reset(new qtime::SimpleDayCounter());
 	}
-	return new YieldCurve(dc, t0_,instruments);
+	return std::move(std::unique_ptr<yield::YieldCurve>(new YieldCurve(dc, t0_,instruments)));
 }
 
 void yield::YieldCurve::boostrap()

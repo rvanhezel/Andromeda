@@ -16,31 +16,37 @@ using namespace literals;
 
 namespace tt = boost::test_tools;
 
-BOOST_AUTO_TEST_CASE(DERIVATIVES)
-{
-	std::cout << "Testing qtime " << std::endl;
+BOOST_AUTO_TEST_CASE(QTIME)
+{	
+	std::cout << "Checking Tenor logic" << std::endl;
+	Tenor<SMONTH> t12monthfromyears = 1.0_years;
+	Tenor<SMONTH> t48monthfromyears = 4.0_years;
 
-	Tenor<SMONTH> tmonth = 1.0_years;
-	Tenor<SWEEK> tweek = 1.0_months; 
+	BOOST_CHECK_MESSAGE(t12monthfromyears == 12.0_months, "Invalid conversion years to month");
+	BOOST_CHECK_MESSAGE(t48monthfromyears == 48.0_months, "Invalid conversion years to month");
+	
+	auto t48_12 = t48monthfromyears - t12monthfromyears;
+	BOOST_CHECK_MESSAGE(t48_12 == 36.0_months, "Invalid conversion years to month");
+
 	yield::YieldCurveBuilder ybuilder(qtime::QDate(01,01,2018));
 	std::unique_ptr<qtime::DayCounter> dc(new qtime::Actual365fixed());
 	qtime::QDate T0(01, 01, 2018);
 	instrument::CashFlow flow1(T0, 3.0_months,1e6);
 	instrument::CashFlow flow2(T0, 6.0_months, 1e6);
 	
-	auto libor1m = new instrument::xIbor(T0,0.01, 1.0_months);
-	auto libor3m = new instrument::xIbor(T0, 0.015, 3.0_months);
-	auto libor6m = new instrument::xIbor(T0, 0.019, 6.0_months);
-	auto libor9m = new instrument::xIbor(T0, 0.0197, 9.0_months);
-	auto libor12m = new instrument::xIbor(T0, 0.02, 12.0_months);
-	auto swap1 = new instrument::Swap(qtime::QDate(01, 01, 2020),0.04,flow1,flow2);
-	auto swap3 = new instrument::Swap(qtime::QDate(01, 01, 2021), 0.05, flow1, flow2);
-	auto swap5 = new instrument::Swap(qtime::QDate(01, 01, 2023), 0.06, flow1, flow2);
-	auto swap10 = new instrument::Swap(qtime::QDate(01, 01, 2028), 0.1, flow1, flow2);
-	yield::YieldCurve* oyield = ybuilder.withDayCount(std::move(dc))
-									  .withInstrument(swap1)
-									  .withInstrument(swap3).withInstrument(swap5).withInstrument(swap10).withInstrument(libor1m).withInstrument(libor3m)
-									  .withInstrument(libor6m).withInstrument(libor9m).withInstrument(libor12m)
+	std::unique_ptr<instrument::xIbor> libor1m(new instrument::xIbor(T0,0.01, 1.0_months));
+	std::unique_ptr<instrument::xIbor>  libor3m(new instrument::xIbor(T0, 0.015, 3.0_months));
+	std::unique_ptr<instrument::xIbor>  libor6m(new instrument::xIbor(T0, 0.019, 6.0_months));
+	std::unique_ptr<instrument::xIbor>  libor9m(new instrument::xIbor(T0, 0.0197, 9.0_months));
+	std::unique_ptr<instrument::xIbor>  libor12m(new instrument::xIbor(T0, 0.02, 12.0_months));
+	std::unique_ptr<instrument::Swap> swap1(new instrument::Swap(qtime::QDate(01, 01, 2020),0.04,flow1,flow2));
+	std::unique_ptr<instrument::Swap>  swap3(new instrument::Swap(qtime::QDate(01, 01, 2021), 0.05, flow1, flow2));
+	std::unique_ptr<instrument::Swap>  swap5 (new instrument::Swap(qtime::QDate(01, 01, 2023), 0.06, flow1, flow2));
+	std::unique_ptr<instrument::Swap>  swap10(new instrument::Swap(qtime::QDate(01, 01, 2028), 0.1, flow1, flow2));
+	std::unique_ptr <yield::YieldCurve> oyield = ybuilder.withDayCount(std::move(dc))
+									  .withInstrument(swap1.get())
+									  .withInstrument(swap3.get()).withInstrument(swap5.get()).withInstrument(swap10.get()).withInstrument(libor1m.get()).withInstrument(libor3m.get())
+									  .withInstrument(libor6m.get()).withInstrument(libor9m.get()).withInstrument(libor12m.get())
 									  .Build();
 
 	oyield->boostrap();

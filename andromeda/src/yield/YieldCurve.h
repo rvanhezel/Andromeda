@@ -59,7 +59,7 @@ namespace yield
 		const YieldCurveBuilder& withInstrument(const instrument::Instrument* pintr) const;
 		const YieldCurveBuilder& withDayCount(std::unique_ptr<qtime::DayCounter> pdc) const;	
 		
-		YieldCurve*  Build() const;
+		std::unique_ptr<yield::YieldCurve> Build() const;
 	};
 
 }

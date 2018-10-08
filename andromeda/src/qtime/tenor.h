@@ -2,6 +2,7 @@
 #include "libdef.h"
 #include "QDate.h"
 #include <math.h>
+#include <complex>
 
 namespace qtime
 {
@@ -28,6 +29,13 @@ namespace qtime
 			template<typename P>
 			operator Tenor<P>() { return Tenor<P>(this->Q::n * Q::numberofdays / P::numberofdays); }
 		};		
+
+
+		template<typename P, typename Q>
+		bool operator==(const Tenor<P>& a, const Tenor<Q>& b){
+			Tenor<P> c = b;
+			return std::abs(c.n - a.n) < 1e-12;			
+		}
 
 
 		template<typename Q>
