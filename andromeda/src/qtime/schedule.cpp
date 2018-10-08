@@ -1,9 +1,18 @@
 #include "schedule.h"
+#include "buinessdayconvention.h"
+#include "Calendar.h"
 
 
-qtime::Schedule::Schedule(QDate effectiveDate, const QDate& terminationDate, const Tenor<SMONTH>& tenor, const qtime::Calendar& calendar, BusinessDayConvention convention, BusinessDayConvention terminationDateConvention, DateGeneration::Rule rule, bool endOfMonth)
+qtime::Schedule::Schedule(QDate effectiveDate_, 
+						  const QDate& terminationDate_, 
+	                      const qtime::Tenor<qtime::SMONTH> tenor_, 
+						  const qtime::Calendar* calendar_, 
+	                      const BusinessDayConvention* convention_, 
+	                      const BusinessDayConvention* terminationDateConvention_, 
+	                      DateGeneration::Rule rule_)
+	:effectiveDate(effectiveDate_), terminationDate(terminationDate_),tenor(tenor_), calendar(calendar_),convention(convention_),terminationDateConvention(terminationDateConvention_),rule(rule_)
 {
-	generatedates();
+	
 }
 
 qtime::Schedule::const_iterator qtime::Schedule::begin() const
@@ -16,13 +25,54 @@ qtime::Schedule::const_iterator qtime::Schedule::end() const
 	return dates_.end();
 }
 
-qtime::Schedule qtime::Schedule::until(const QDate& truncationDate) const
+
+void qtime::Schedule::generaterawdates()
 {
-	throw "not implemented";
+	switch (rule)
+	{
+		case DateGeneration::Backward:
+		{
+			QDate x = terminationDate;
+			dates_.push_back(terminationDateConvention->adapt(terminationDate));
+			x = x - tenor;
+			while (x > effectiveDate)
+			{
+				dates_.push_back(convention->adapt(x));
+				x = x - tenor;				
+			}
+			dates_.push_back(convention->adapt(effectiveDate));
+		}
+		case DateGeneration::Forward:
+		{
+			QDate x = effectiveDate;
+			dates_.push_back(convention->adapt(x));
+			x = x + tenor;
+			while (x < terminationDate)
+			{
+				dates_.push_back(convention->adapt(x));
+				x = x + tenor;				
+			}
+			dates_.push_back(terminationDateConvention->adapt(terminationDate));
+		}
+		case DateGeneration::Zero:
+		{
+			dates_.push_back(convention->adapt(effectiveDate));
+			dates_.push_back(terminationDateConvention->adapt(terminationDate));
+		}
+		case DateGeneration::EndOfMonth:
+		{
+			QDate x = effectiveDate;
+			dates_.push_back(convention->adapt(x));
+			x = x + tenor;
+			x = x.MonthEnd();
+			while (x < terminationDate)
+			{
+				dates_.push_back(convention->adapt(x));
+				x = x + tenor;
+				x = x.MonthEnd();
+			}
+			dates_.push_back(terminationDateConvention->adapt(terminationDate));
+		}
+	}	
 }
 
-void qtime::Schedule::generatedates()
-{
-	dates_.push_back(effectiveDate);
-
-}

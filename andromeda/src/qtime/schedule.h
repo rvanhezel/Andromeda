@@ -12,30 +12,21 @@ namespace qtime
 	class Schedule
 	{
 	public:
-		Schedule(
-			QDate effectiveDate,
-			const QDate& terminationDate,
-			const Tenor<SMONTH> & tenor,
-			const qtime::Calendar& calendar,
-			const BusinessDayConvention* convention,
-			const BusinessDayConvention* terminationDateConvention,
-			DateGeneration::Rule rule,
-			bool endOfMonth);
-
+		
 		typedef std::vector<QDate>::const_iterator const_iterator;
+		Schedule(QDate effectiveDate_, const QDate& terminationDate_, const Tenor<SMONTH> tenor_, const qtime::Calendar* calendar_, const BusinessDayConvention* convention_, const BusinessDayConvention* terminationDateConvention_, DateGeneration::Rule rule_);
 		const_iterator begin() const;
-		const_iterator end() const;			
-		Schedule until(const QDate& truncationDate) const;
+		const_iterator end() const;					
 
 	private:
 		std::vector<QDate> dates_;
-		const QDate effectiveDate;
-		const QDate terminationDate;
-		const Tenor<SMONTH> & tenor;
+		QDate effectiveDate;
+		QDate terminationDate;
+		Tenor<SMONTH> tenor;
 		const qtime::Calendar* calendar;
 		const qtime::BusinessDayConvention* convention;
 		const qtime::BusinessDayConvention* terminationDateConvention;
-		const DateGeneration::Rule rule;		
-		void generatedates();
+		DateGeneration::Rule rule;		
+		void generaterawdates();		
 	};
 }

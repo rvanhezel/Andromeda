@@ -20,7 +20,7 @@ namespace qtime
 		struct EXPORT_SYMBOL Tenor: public Q
 		{			
 			Tenor(const Tenor<Q> & t) { this->Q::n = t.Q::n; }									
-			Tenor(long double x) { this->Q::n = double(x); }
+			explicit Tenor(long double x) { this->Q::n = double(x); }
 			Tenor<Q> operator=(const double& x) {return Tenor<Q>{x}; }
 			Tenor<Q> operator+=(const Tenor<Q>& rhs) { return Tenor<Q>{this->Q::n + rhs}; }			
 			Tenor<Q> operator-=(const Tenor<Q>& rhs) { return Tenor<Q>{this->Q::n - rhs}; }			

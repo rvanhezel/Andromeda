@@ -1,4 +1,9 @@
 
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE differenciationTest
+#include <cmath>
+#include <boost/test/included/unit_test.hpp> // this work
+
 #include <iostream>
 #include <memory>
 #include "../src/qtime/tenor.h"
@@ -9,12 +14,14 @@
 using namespace qtime;
 using namespace literals;
 
-int main(int argc, char* args[])
+namespace tt = boost::test_tools;
+
+BOOST_AUTO_TEST_CASE(DERIVATIVES)
 {
-	std::cout << "Hello Andromeda" << std::endl;
+	std::cout << "Testing qtime " << std::endl;
 
 	Tenor<SMONTH> tmonth = 1.0_years;
-	Tenor<SWEEK> tweek = 1.0_months;
+	Tenor<SWEEK> tweek = 1.0_months; 
 	yield::YieldCurveBuilder ybuilder(qtime::QDate(01,01,2018));
 	std::unique_ptr<qtime::DayCounter> dc(new qtime::Actual365fixed());
 	qtime::QDate T0(01, 01, 2018);
@@ -51,5 +58,5 @@ int main(int argc, char* args[])
 	auto f11d = oyield->forward(T0 + 365, qtime::Tenor<SDAY>(1));
 	auto d1 = oyield->discount(1.0_years);
 	auto zz = 1 / (1 + f11d * to_years(Tenor<SDAY>(1)));
-	return 0;
+	
 }

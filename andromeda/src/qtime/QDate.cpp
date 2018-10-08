@@ -14,10 +14,12 @@ qtime::QDate::QDate()
 }
 
 qtime::QDate::QDate(int day, int month, int year) {
-	_d = new boost::gregorian::date(year, month, day);
-	auto a = _d->day();
-	auto b = _d->year();
-	auto c = _d->month();
+	_d = new boost::gregorian::date(year, month, day);	
+}
+
+qtime::QDate::QDate(int day, MONTH month, int year)
+{
+	_d = new boost::gregorian::date(year, int(month), day);
 }
 
 qtime::QDate::QDate(const QDate& that) {

@@ -14,6 +14,7 @@ public:
 	//ctors
 	QDate();
 	QDate(int day, int month, int year);	
+	QDate(int day, MONTH month, int year);
 	explicit QDate(const long& unixtime);
 
 	//copy
