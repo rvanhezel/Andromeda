@@ -51,7 +51,7 @@ namespace yield
 	{
 		mutable std::vector<const instrument::Instrument*> instruments;
 		mutable std::unique_ptr<qtime::DayCounter> dc;
-		const qtime::QDate& t0_;
+		const qtime::QDate t0_;
 		
 	public:
 		explicit YieldCurveBuilder(const qtime::QDate& t0);

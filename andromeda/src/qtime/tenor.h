@@ -1,6 +1,7 @@
 #pragma once
 #include "libdef.h"
 #include "QDate.h"
+#include <math.h>
 
 namespace qtime
 {
@@ -70,7 +71,7 @@ namespace qtime
 			int m_0 = int(x.Month())-1 + int(d.n);
 			int newmonth = (m_0 % 12) + 1;
 			double dy = m_0 / 12.0;					
-			return QDate(x.DayOfTheMonth(), newmonth, x.Year() + floor(dy));			
+			return QDate(x.DayOfTheMonth(), newmonth, x.Year() + floor(dy));
 		}
 
 		inline QDate operator+(const Tenor<SMONTH>& d, const QDate& x) { return x + d; };

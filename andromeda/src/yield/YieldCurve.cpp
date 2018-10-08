@@ -1,7 +1,5 @@
 ﻿#include "YieldCurve.h"
-#include <algorithm>
 #include <boost/range/combine.hpp>
-#include "../qtime/QDate.h"
 
 namespace
 {
@@ -150,16 +148,16 @@ void yield::YieldCurve::boostrap()
 	std::copy_if(pinstruments.begin(), pinstruments.end(), std::back_inserter(xibors), [](auto p) {return dynamic_cast<const instrument::xIbor*>(p) != nullptr; });
 
 	std::sort(xibors.begin(),xibors.end(),[](auto a, auto b){
-		const xIbor* x = dynamic_cast<const instrument::xIbor*>(a);
-		const xIbor* y = dynamic_cast<const instrument::xIbor*>(b);
+		const auto * x = dynamic_cast<const instrument::xIbor*>(a);
+		const auto * y = dynamic_cast<const instrument::xIbor*>(b);
 		return qtime::to_years(x->tenor) < qtime::to_years(y->tenor);
 		
 	});
 
 	std::sort(swaps.begin(), swaps.end(), [](auto a, auto b)
 	{
-		const Swap* x = dynamic_cast<const instrument::Swap*>(a);
-		const Swap* y = dynamic_cast<const instrument::Swap*>(b);		
+		const auto * x = dynamic_cast<const instrument::Swap*>(a);
+		const auto * y = dynamic_cast<const instrument::Swap*>(b);
 		return x->maturity < y->maturity;
 	});
 
@@ -279,7 +277,7 @@ double yield::YieldCurve::priceSwap(const instrument::Swap* swap,const double &p
 	
 	while(tx <= tmat)
 	{
-		boost::optional<std::pair<double, double>> xp = std::make_pair(tmat, r);
+		boost::optional<std::pair<double, double>> xp(std::make_pair(tmat, r));
 		auto rx = interpolated_rate(tx, xp);
 		den += std::exp(-rx * tx)*dt;
 		tx += dt;

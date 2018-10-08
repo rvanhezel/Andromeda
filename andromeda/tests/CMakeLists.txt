@@ -11,10 +11,18 @@ file(GLOB HEADERS ${CMAKE_SOURCE_DIR}/andromeda/inc/libdef.h
 message(STATUS "/////////////////////////" ${SOURCES})
 message(STATUS "/////////////////////////" ${HEADERS})
 
+if (WIN32)
+	message(STATUS "------------------:configuring windows")
+	set(BOOST_LIBRARYDIR "C:/Boost/lib")
+	set(BOOST_ROOT "C:/Boost/include/boost-1_68")
+endif (WIN32)
 
+if (UNIX)
+	message(STATUS "------------------:configuring unix")
+	set(BOOST_LIBRARYDIR "/opt/dev/lib")
+	set(BOOST_ROOT "/opt/dev/include")
+endif (UNIX)
 
-set(BOOST_LIBRARYDIR "C:/Boost/lib")
-set(BOOST_ROOT "C:/Boost/include/boost-1_68")
 
 set(Boost_USE_STATIC_LIBS OFF) 
 set(Boost_USE_MULTITHREADED ON)  
@@ -49,7 +57,7 @@ foreach(testSrc ${SOURCES})
         add_executable(${testName} ${testSrc})
 		
         #link to Boost libraries AND your targets and dependencies
-        target_link_libraries(${testName} ${Boost_LIBRARIES} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/andromeda.lib)        
+        target_link_libraries(${testName} ${Boost_LIBRARIES} andromeda)
 
         #Finally add it to test execution - 
         #Notice the WORKING_DIRECTORY and COMMAND

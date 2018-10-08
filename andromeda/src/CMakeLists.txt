@@ -1,6 +1,4 @@
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHc /std:c++17")
-
+project(andromeda)
 add_definitions(-DEXPMODULE)
 message(STATUS "..................................." ${CMAKE_SOURCE_DIR}/andromeda/inc/)
 file(GLOB SOURCES 
@@ -18,9 +16,17 @@ message(STATUS "/////////////////////////" ${SOURCES})
 message(STATUS "/////////////////////////" ${HEADERS})
 
 
+if (WIN32)
+	message(STATUS "------------------:configuring windows")
+	set(BOOST_LIBRARYDIR "C:/Boost/lib")
+	set(BOOST_ROOT "C:/Boost/include/boost-1_68")
+endif (WIN32)
 
-set(BOOST_LIBRARYDIR "C:/Boost/lib")
-set(BOOST_ROOT "C:/Boost/include/boost-1_68")
+if (UNIX)
+	message(STATUS "------------------:configuring unix")
+	set(BOOST_LIBRARYDIR "/opt/dev/lib")
+	set(BOOST_ROOT "/opt/dev/include")
+endif (UNIX)
 
 set(Boost_USE_STATIC_LIBS OFF) 
 set(Boost_USE_MULTITHREADED ON)  
