@@ -270,7 +270,7 @@ double yield::YieldCurve::priceSwap(const instrument::Swap* swap,const double &p
 	
 	while(tx <= tmat)
 	{
-		boost::optional<std::pair<double, double>> xp = std::make_pair(tmat, r);
+		boost::optional<std::pair<double, double>> xp(std::make_pair(tmat, r));
 		auto rx = interpolated_rate(tx, xp);
 		den += std::exp(-rx * tx)*dt;
 		tx += dt;

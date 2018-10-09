@@ -2,16 +2,29 @@
 #include <iostream>
 #include <memory>
 #include "../src/qtime/tenor.h"
-//#include "../src/yield/YieldCurve.h"
+#include "../src/yield/YieldCurve.h"
 #include <boost/range/counting_range.hpp>
 #include <boost/range/irange.hpp>
+#include "../src/qtime/DateSchedule.h"
+#include "../src/qtime/CalendarHelper.h"
 
 using namespace qtime;
 using namespace literals;
 
 int main(int argc, char* args[])
 {
-	std::cout << "Hello Andromeda" << std::endl;
+	qtime::QDate a(15, 12, 2018);
+	std::cout << "Original date is : " << a << std::endl;
+
+	auto date = addFREQ(a, DateSchedule::FREQ::M);
+	std::cout << "Date plus M : "  << date << std::endl;
+	std::cout << "Date minus M : "  << minusFREQ(a, DateSchedule::FREQ::M) << std::endl;
+
+	qtime::QuickDateSchedule dateSched(qtime::QDate(1, 01, 2018), 
+										qtime::QDate(1, 01, 2020), 
+							 			DateSchedule::FREQ::SA);
+	std::cout << dateSched << std::endl;
+
 	/*yield::YieldCurveBuilder ybuilder(qtime::QDate(01,01,2018));
 	std::unique_ptr<qtime::DayCounter> dc(new qtime::Thirty360(qtime::Thirty360::CONVENTION::BONDBASIS,true));
 	
@@ -41,5 +54,8 @@ int main(int argc, char* args[])
 		double t = 10.0 * n / double(N);
 		std::cout << "t="<<t<<" r=" << oyield->rate(Tenor<SYEAR>(t)) << std::endl;
 	}*/
+
+
+
 	return 0;
 }
