@@ -19,17 +19,17 @@ namespace tt = boost::test_tools;
 BOOST_AUTO_TEST_CASE(QTIME)
 {	
 	std::cout << "Checking Tenor logic" << std::endl;
-	Tenor<SMONTH> t12monthfromyears = 1_years;
+	Tenor<SMONTH> t12monthfromyears = -1.0 * 1_years;
 	Tenor<SMONTH> t48monthfromyears = 4_years;
 	Tenor<SDAY> t365daysfrom1years = 1_years;
 	Tenor<SDAY> t3x365daysfrom3years = 3_years;
-
-	BOOST_CHECK_MESSAGE(t12monthfromyears == 12_months, "Invalid conversion years to month (12 months)");
+	auto aa = -1.0 * 12_months;
+	BOOST_CHECK_MESSAGE(t12monthfromyears == -1.0 * 12_months, "Invalid conversion years to month (12 months)");
 	BOOST_CHECK_MESSAGE(t48monthfromyears == 4* 12_months, "Invalid conversion years to month (4*12months)");
 	BOOST_CHECK_MESSAGE(t365daysfrom1years == 360_days, "Invalid conversion years to month (365 days)");
 	BOOST_CHECK_MESSAGE(t3x365daysfrom3years == 3 * 360_days, "Invalid conversion years to month (3 * 365 days)");
 	
-	auto t48_12 = t48monthfromyears - t12monthfromyears;
+	Tenor<SMONTH> t48_12 = t48monthfromyears - 12_months;
 	BOOST_CHECK_MESSAGE(t48_12 == 36_months, "Invalid conversion years to month");
 
 	yield::YieldCurveBuilder ybuilder(qtime::QDate(01,01,2018));

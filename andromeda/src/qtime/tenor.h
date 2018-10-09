@@ -39,7 +39,9 @@ namespace qtime
 
 
 		template<typename Q>
-		bool operator==(const Tenor<Q>& lhs, const Tenor<Q>& rhs) { return std::abs(lhs.n - rhs.n)<1e-12; }
+		bool operator==(const Tenor<Q>& lhs, const Tenor<Q>& rhs) { 
+			return std::abs(lhs.n - rhs.n)<1e-12; 
+		}
 
 		template<typename Q>
 		Tenor<Q> operator+(const Tenor<Q>& lhs,const Tenor<Q>& rhs) { return Tenor<Q>(lhs.n + rhs.n); }
