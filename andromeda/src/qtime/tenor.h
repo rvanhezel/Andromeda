@@ -104,10 +104,10 @@ namespace qtime
 		inline double to_years(const Tenor<SWEEK>& o, int daysperyear = 365) { return o.n*7/daysperyear; }
 		
 
-		inline Tenor<SDAY> operator""_days(long double n) { return Tenor<SDAY>(n); }
-		inline Tenor<SMONTH> operator""_months(long double n) { return Tenor<SMONTH>(n); }
-		inline Tenor<SWEEK> operator""_weeks(long double n) { return Tenor<SWEEK>(n); }
-		inline Tenor<SYEAR> operator""_years(long double n) { return Tenor<SYEAR>(n); }
+		inline Tenor<SDAY> operator""_days(unsigned long long n) { return Tenor<SDAY>(n); }
+		inline Tenor<SMONTH> operator""_months(unsigned long long n) { return Tenor<SMONTH>(n); }
+		inline Tenor<SWEEK> operator""_weeks(unsigned long long n) { return Tenor<SWEEK>(n); }
+		inline Tenor<SYEAR> operator""_years(unsigned long long n) { return Tenor<SYEAR>(n); }
 	}
 	
 

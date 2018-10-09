@@ -19,26 +19,30 @@ namespace tt = boost::test_tools;
 BOOST_AUTO_TEST_CASE(QTIME)
 {	
 	std::cout << "Checking Tenor logic" << std::endl;
-	Tenor<SMONTH> t12monthfromyears = 1.0_years;
-	Tenor<SMONTH> t48monthfromyears = 4.0_years;
+	Tenor<SMONTH> t12monthfromyears = 1_years;
+	Tenor<SMONTH> t48monthfromyears = 4_years;
+	Tenor<SDAY> t365daysfrom1years = 1_years;
+	Tenor<SDAY> t3x365daysfrom3years = 3_years;
 
-	BOOST_CHECK_MESSAGE(t12monthfromyears == 12.0_months, "Invalid conversion years to month");
-	BOOST_CHECK_MESSAGE(t48monthfromyears == 48.0_months, "Invalid conversion years to month");
+	BOOST_CHECK_MESSAGE(t12monthfromyears == 12_months, "Invalid conversion years to month (12 months)");
+	BOOST_CHECK_MESSAGE(t48monthfromyears == 4* 12_months, "Invalid conversion years to month (4*12months)");
+	BOOST_CHECK_MESSAGE(t365daysfrom1years == 360_days, "Invalid conversion years to month (365 days)");
+	BOOST_CHECK_MESSAGE(t3x365daysfrom3years == 3 * 360_days, "Invalid conversion years to month (3 * 365 days)");
 	
 	auto t48_12 = t48monthfromyears - t12monthfromyears;
-	BOOST_CHECK_MESSAGE(t48_12 == 36.0_months, "Invalid conversion years to month");
+	BOOST_CHECK_MESSAGE(t48_12 == 36_months, "Invalid conversion years to month");
 
 	yield::YieldCurveBuilder ybuilder(qtime::QDate(01,01,2018));
 	std::unique_ptr<qtime::DayCounter> dc(new qtime::Actual365fixed());
 	qtime::QDate T0(01, 01, 2018);
-	instrument::CashFlow flow1(T0, 3.0_months,1e6);
-	instrument::CashFlow flow2(T0, 6.0_months, 1e6);
+	instrument::CashFlow flow1(T0, 3_months,1e6);
+	instrument::CashFlow flow2(T0, 6_months, 1e6);
 	
-	std::unique_ptr<instrument::xIbor> libor1m(new instrument::xIbor(T0,0.01, 1.0_months));
-	std::unique_ptr<instrument::xIbor>  libor3m(new instrument::xIbor(T0, 0.015, 3.0_months));
-	std::unique_ptr<instrument::xIbor>  libor6m(new instrument::xIbor(T0, 0.019, 6.0_months));
-	std::unique_ptr<instrument::xIbor>  libor9m(new instrument::xIbor(T0, 0.0197, 9.0_months));
-	std::unique_ptr<instrument::xIbor>  libor12m(new instrument::xIbor(T0, 0.02, 12.0_months));
+	std::unique_ptr<instrument::xIbor> libor1m(new instrument::xIbor(T0,0.01, 1_months));
+	std::unique_ptr<instrument::xIbor>  libor3m(new instrument::xIbor(T0, 0.015, 3_months));
+	std::unique_ptr<instrument::xIbor>  libor6m(new instrument::xIbor(T0, 0.019, 6_months));
+	std::unique_ptr<instrument::xIbor>  libor9m(new instrument::xIbor(T0, 0.0197, 9_months));
+	std::unique_ptr<instrument::xIbor>  libor12m(new instrument::xIbor(T0, 0.02, 12_months));
 	std::unique_ptr<instrument::Swap> swap1(new instrument::Swap(qtime::QDate(01, 01, 2020),0.04,flow1,flow2));
 	std::unique_ptr<instrument::Swap>  swap3(new instrument::Swap(qtime::QDate(01, 01, 2021), 0.05, flow1, flow2));
 	std::unique_ptr<instrument::Swap>  swap5 (new instrument::Swap(qtime::QDate(01, 01, 2023), 0.06, flow1, flow2));
@@ -62,7 +66,7 @@ BOOST_AUTO_TEST_CASE(QTIME)
 	auto f16m = oyield->forward(T0 + 365, qtime::Tenor<SDAY>(30 * 6));
 	auto f13m = oyield->forward(T0 + 365, qtime::Tenor<SDAY>(30 * 3));
 	auto f11d = oyield->forward(T0 + 365, qtime::Tenor<SDAY>(1));
-	auto d1 = oyield->discount(1.0_years);
+	auto d1 = oyield->discount(1_years);
 	auto zz = 1 / (1 + f11d * to_years(Tenor<SDAY>(1)));
 	
 }
