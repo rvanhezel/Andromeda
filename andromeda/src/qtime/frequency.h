@@ -1,4 +1,5 @@
 #pragma once
+#include "tenor.h"
 namespace qtime
 {
 	enum Frequency {
@@ -16,4 +17,6 @@ namespace qtime
 		Daily = 365,          //!< once a day
 		OtherFrequency = 999  //!< some other unknown frequency
 	};
+
+	Tenor<SDAY> toTenor(const Frequency& f);
 }

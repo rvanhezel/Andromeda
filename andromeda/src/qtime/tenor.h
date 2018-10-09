@@ -27,7 +27,7 @@ namespace qtime
 			Tenor<Q> operator+=(const Tenor<Q>& rhs) { return Tenor<Q>{this->Q::n + rhs}; }			
 			Tenor<Q> operator-=(const Tenor<Q>& rhs) { return Tenor<Q>{this->Q::n - rhs}; }			
 			template<typename P>
-			operator Tenor<P>() { return Tenor<P>(this->Q::n * Q::numberofdays / P::numberofdays); }
+			operator Tenor<P>() { return Tenor<P>(this->Q::n * Q::numberofdays / P::numberofdays); }			
 		};		
 
 
