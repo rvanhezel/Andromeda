@@ -18,21 +18,30 @@ namespace tt = boost::test_tools;
 
 BOOST_AUTO_TEST_CASE(QTIME)
 {	
-	std::cout << "Checking Tenor logic" << std::endl;
+	std::cout << "Test Tenor conversions" << std::endl;
 	Tenor<SMONTH> t12monthfromyears = -1.0 * 1_years;
 	Tenor<SMONTH> t48monthfromyears = 4_years;
 	Tenor<SDAY> t365daysfrom1years = 1_years;
 	Tenor<SDAY> t3x365daysfrom3years = 3_years;
-	auto aa = -1.0 * 12_months;
+	
 	BOOST_CHECK_MESSAGE(t12monthfromyears == -1.0 * 12_months, "Invalid conversion years to month (12 months)");
 	BOOST_CHECK_MESSAGE(t48monthfromyears == 4* 12_months, "Invalid conversion years to month (4*12months)");
 	BOOST_CHECK_MESSAGE(t365daysfrom1years == 360_days, "Invalid conversion years to month (365 days)");
 	BOOST_CHECK_MESSAGE(t3x365daysfrom3years == 3 * 360_days, "Invalid conversion years to month (3 * 365 days)");
-	
+
 	Tenor<SMONTH> t48_12 = t48monthfromyears - 12_months;
 	BOOST_CHECK_MESSAGE(t48_12 == 36_months, "Invalid conversion years to month");
 
-	yield::YieldCurveBuilder ybuilder(qtime::QDate(01,01,2018));
+	std::cout << "Testing Tenor operations" << std::endl;
+	BOOST_CHECK_MESSAGE(1_days + 3_days == 4_days, "Error: 1_days + 3_days <> 4_days");
+	BOOST_CHECK_MESSAGE(1_weeks + 3_weeks == 4_weeks, "Error: 1_weeks + 3_weeks <> 4_weeks");
+	BOOST_CHECK_MESSAGE(1_months + 3_months == 4_months, "Error: 1_months + 3_months <> 4_months");
+	BOOST_CHECK_MESSAGE(3 * 3_months == 9_months, "Error: 3 * 3_months <> 9_months");
+	BOOST_CHECK_MESSAGE(3_months * 4 == 12_months, "Error: 3_months * 4 <> 12_months");
+	
+}
+/**
+ * yield::YieldCurveBuilder ybuilder(qtime::QDate(01,01,2018));
 	std::unique_ptr<qtime::DayCounter> dc(new qtime::Actual365fixed());
 	qtime::QDate T0(01, 01, 2018);
 	instrument::CashFlow flow1(T0, 3_months,1e6);
@@ -68,5 +77,4 @@ BOOST_AUTO_TEST_CASE(QTIME)
 	auto f11d = oyield->forward(T0 + 365, qtime::Tenor<SDAY>(1));
 	auto d1 = oyield->discount(1_years);
 	auto zz = 1 / (1 + f11d * to_years(Tenor<SDAY>(1)));
-	
-}
+ */
